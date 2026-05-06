@@ -1,47 +1,52 @@
 
-## Desafío Técnico - Descripción
+# 3MetaD Candidate Assignment Options 
 
-# Consideraciones técnicas:
-- Utilizar el lenguaje de programación Go (Golang) para una API y Node.js para la otra API.
-- Implementar la solución utilizando los frameworks Fiber para la API en Go y Express.js para la API en Node.js.
-- Documentar el código de manera clara y concisa, siguiendo las mejores prácticas de codificación.
-- Utilizar Docker para contenerizar las aplicaciones y facilitar su despliegue en diferentes entornos.
-- Implementar la comunicación entre las dos API utilizando un mecanismo como HTTP.
-- Utilizar servicios en la nube para la implementación y el despliegue de las aplicaciones.
+## Gameplay / Systems Demos 
+1. Procedural Dungeon Generator – build a basic dungeon crawler where each run 
+generates a new map layout with random rooms, corridors, and loot placements. 
+focus on replayability logic, not visuals. 
+2. Multiplayer Arena Prototype – simple lobby → match flow with 2–4 players. 
+demonstrate player joining, spawning, and basic interaction (tag, damage, or item 
+collection). 
+3. High Score Leaderboard System – create a reusable plugin for score tracking and 
+persistence. local leaderboard required, online leaderboard optional. should show 
+authentication/token flow. 
+4. Combat AI Demo – NPC with 2–3 basic behaviors (patrol, chase, attack). 
+demonstrate state changes in response to player actions. 
+5. Arena Feature Module – prototype one arena mechanic: e.g., shrinking safe zone, 
+timed hazards, or a capture-the-point system. 
 
-# Arquitectura de la solución:
-- API en Go: Esta API recibirá la matriz original como entrada, realizará la rotación de la matriz y luego enviará los datos 
-resultantes a la segunda API en Node.js.
-- API en Node.js: Esta API recibirá los datos de la matriz rotada de la API en Go, calculará estadísticas sobre los datos y 
-devolverá estas estadísticas como resultado.
+## Cinematic & Visual Assignments 
+6. Film-Style Scene Render – set up a short 20–30 sec cinematic in Unreal, showing 
+lighting, camera cuts, and mood. doesn’t need characters; can be environment
+only. 
+7. Character Intro Sequence – import a mannequin or free character and create a 
+cinematic “hero reveal” with animation, lighting, and camera moves. 
+8. Lighting & Atmosphere Study – demonstrate three distinct moods (e.g., horror 
+cave, tribal arena, sci-fi city) in one small level using only free UE assets. 
 
-# Funcionalidad requerida:
-- Crear dos API RESTful:
-  - Una API en Go que reciba como entrada un array de arrays de números que represente una matriz rectangular y 
-devuelva la factorización QR de dicha matriz.
-  - Otra API en Node.js que reciba el resultado de las matrices devueltas por la primera API y realice una operación 
-adicional sobre los datos. (*) Detalle en la sección operaciones adicionales
-- Implementar la lógica para realizar la rotación de la matriz y la operación adicional de manera eficiente y correcta en 
-cada API.
+## Mechanics / Feature Tests 
+9. Procedural Wave Spawner – build an encounter system that spawns NPC enemies 
+in waves, scaling difficulty each round. 
+10. Animation Blueprint Test – create a character with idle → walk → attack animation 
+blend. show smooth transitions and animation montages in action. 
+11. Token Security Flow – simulate a “score submission” protected by tokens. token 
+expires after X uses/time. show rejection when invalid and refresh logic when 
+renewed. 
+12. Puzzle Interaction System – design a small puzzle (switches, doors, triggers) that 
+demonstrates logic flow for scalable re-use. 
 
-# Funcionalidad opcional:
-- Implementar un frontend que consuma ambas APIs y muestre los resultados de la rotación de la matriz y las 
-estadísticas adicionales.
-- Aplicar un nivel de seguridad utilizando JWT para proteger las consultas a las APIs.
-- Implementar pruebas unitarias y de integración para garantizar la calidad del código en ambas API.
+## Exploration / Immersion 
+13. Procedural Environment Tile System – generate terrain/biome chunks at runtime 
+to simulate infinite exploration. 
+14. Interactive NPC Dialogue Prototype – build a simple branching dialogue tree with 
+reputation or choice-based outcomes. 
+15. Resource Collection & Crafting Mock – basic NPC-driven crafting system (player 
+gives item/token → NPC returns crafted output). keep it simple, abstracted. 
 
-# Operación adicional:
-- La segunda API calculará lo siguientes sobre los datos de las matrices devueltas:
-  - Valor máximo: El valor máximo encontrado en las matrices.
-  - Valor mínimo: El valor mínimo encontrado en las matrices.
-  - Promedio: El promedio de todos los valores de las matrices.
-  - Suma total: La suma total de todos los valores de las matrices.
-  - Matriz diagonal: Verificar si alguna matriz es diagonal.
-
-# Consideraciones:
-- No hay un estándar específico para los nombres de los objetos creados, pero se espera coherencia en su estructura y 
-documentación.
-- En caso de dudas en el enunciado, se espera que el candidato tome decisiones informadas y las sustente durante la 
-entrevista.
-- Se valorará la eficiencia y la elegancia de la solución implementada, así como la capacidad del candidato para 
-comunicar y defender sus decisiones técnicas.
+## Guidelines for All Assignments 
+- Use only free/stock Unreal assets (Epic Marketplace, Mixamo, Quixel). No internal 
+3MetaD IP or files. 
+- Focus on logic, structure, and function over art polish. 
+- Deliverables: packaged build + short write-up explaining design choices, 
+challenges, and what’s extendable.
