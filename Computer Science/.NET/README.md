@@ -1,9 +1,28 @@
 
 ---Part 1
 
-SQL Server Query Test
+SQL Server Query Test:
+
+Show the Top 2 products for each category
+Product that generated the most revenue per customer
+Total revenue per customer
+First date where total revenue per customer exceeds 5000
+Month with the highest total sales
+Customers with no purchases
+Top-selling product overall
+Percentage of sales by category
+Customer ranking by spending
+Pivot sales by category
+Detect multiple sales per customer on the same day
+Least-selling product by category
+Customers who purchased in all categories
+Average ticket per customer
+Day with the highest revenue
+Detect products that have never been sold
+Product with the greatest contribution to the overall total
 
 Database Structure Script:
+
 CREATE TABLE Clients (
 ClientId INT PRIMARY KEY,
 Name VARCHAR(100),
