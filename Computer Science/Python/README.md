@@ -1,3 +1,23 @@
+# AI Engineer Test Competency Framework
+
+## Competencies:
+
+1. **Artificial Intelligence** 
+
+It includes the following skills- Artificial Intelligence - Data Mining, Artificial Intelligence - Scalability and Distributed computing, Artificial Intelligence - Sentiment Analysis, Artificial Intelligence - Predictive Analysis, Artificial Intelligence - Security and Ethical Consideration.
+
+2. **Machine Learning**
+
+It includes the following skills- Machine Learning - Feature Engineering and Selection, Machine Learning - Model Validation and Performance Metrics, Machine Learning - Unsupervised Learning, Machine Learning - Reinforcement learning.
+
+3. **Natural Language Processing**
+
+It includes the following skills- Natural Language Processing -Text Preprocessing and Data Augmentation, Natural Language Processing - Natural Language Understanding, Natural Language Processing - Language Modeling and Fine-tuning, Natural Language Processing - Natural Language Generation.
+
+4. **Hands-on Programming**
+
+It includes Codelysis - Python
+
 # About Quoteable.ai 
 
 Quoteable.ai is building Able—an AI co-pilot for plumbing, HVAC, and electrical suppliers that eliminates repetitive job quoting tasks, helping teams move faster from quote to cash. 
@@ -11,18 +31,3 @@ We're looking for a Full Stack AI Engineer who has shipped real LLM or agent-bas
 - Deploy, monitor, and debug production systems (Docker, cloud, CI/CD) 
 - Move fast in an early-stage environment, working closely with founders on roadmap and execution 
 
-## Requirements 
-## Must-Haves 
-- Based in Latin America 
-- Fluent in English (written & spoken) 
-- Proven experience shipping LLM or agent features to real users (not just demos) 
-- Strong full-stack skills: Python + FastAPI and React/Next.js + TypeScript 
-- Comfortable owning deployment and production debugging (Docker + AWS/GCP) 
-- Strong product judgment, speed, and ownership in ambiguous environments 
-- Clear communication and ability to collaborate in real time 
-
-## Nice-to-Haves 
-- LangGraph, Vercel AI SDK, Google ADK, or similar agent frameworks 
-- RAG and vector databases 
-- Multi-tenant SaaS experience 
-- Postgres and pragmatic data modeling 
