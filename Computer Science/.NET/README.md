@@ -1,28 +1,29 @@
 
 ---Part 1
 
-SQL Server Query Test:
+## SQL Server Query Test:
 
-Show the Top 2 products for each category
-Product that generated the most revenue per customer
-Total revenue per customer
-First date where total revenue per customer exceeds 5000
-Month with the highest total sales
-Customers with no purchases
-Top-selling product overall
-Percentage of sales by category
-Customer ranking by spending
-Pivot sales by category
-Detect multiple sales per customer on the same day
-Least-selling product by category
-Customers who purchased in all categories
-Average ticket per customer
-Day with the highest revenue
-Detect products that have never been sold
-Product with the greatest contribution to the overall total
+- Show the Top 2 products for each category
+- Product that generated the most revenue per customer
+- Total revenue per customer
+- First date where total revenue per customer exceeds 5000
+- Month with the highest total sales
+- Customers with no purchases
+- Top-selling product overall
+- Percentage of sales by category
+- Customer ranking by spending
+- Pivot sales by category
+- Detect multiple sales per customer on the same day
+- Least-selling product by category
+- Customers who purchased in all categories
+- Average ticket per customer
+- Day with the highest revenue
+- Detect products that have never been sold
+- Product with the greatest contribution to the overall total
 
-Database Structure Script:
+## Database Structure Script:
 
+```
 CREATE TABLE Clients (
 ClientId INT PRIMARY KEY,
 Name VARCHAR(100),
@@ -82,9 +83,12 @@ INSERT INTO Sales VALUES
 (9,2,2,'2025-01-20',10),
 (10,3,1,'2025-01-25',1);
 
+```
+
 ---Part 2
 
-Form with these fields that allows adding:
+## Form with these fields that allows adding:
+
 Client (Request)
 Product (Request)
 Category (Autofill)
@@ -92,7 +96,8 @@ Price (Autofill)
 Quantity (Request)
 Add button
 
-And a simple table containing these columns:
+## And a simple table containing these columns:
+
 Date
 Client
 Product
@@ -100,7 +105,7 @@ Category
 Quantity
 Total
 
-This must be done in two projects:
+## This must be done in two projects:
 
 1. Backend: Generate an API with two methods to add and list sales.
 
