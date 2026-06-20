@@ -1,5 +1,7 @@
 # AI Engineer Test Competency Framework
 
+IA Engineer recruitment tests typically evaluate machine learning, deep learning, NLP, data mining, prompt engineering, system design, and Python coding skills, using structured MCQs and coding tasks from platforms like Mercer | Mettl, Adaface, TestGorilla, and WeLoveDevs.
+
 ## Competencies:
 
 1. **Artificial Intelligence** 
