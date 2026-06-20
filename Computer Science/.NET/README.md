@@ -1,6 +1,4 @@
 
----Part 1
-
 ## SQL Server Query Test:
 
 - Show the Top 2 products for each category
@@ -85,28 +83,26 @@ INSERT INTO Sales VALUES
 
 ```
 
----Part 2
-
 ## Form with these fields that allows adding:
 
-Client (Request)
-Product (Request)
-Category (Autofill)
-Price (Autofill)
-Quantity (Request)
-Add button
+a) Client (Request)
+b) Product (Request)
+c) Category (Autofill)
+d) Price (Autofill)
+e) Quantity (Request)
+f) Add button
 
 ## And a simple table containing these columns:
 
-Date
-Client
-Product
-Category
-Quantity
-Total
+a) Date
+b) Client
+c) Product
+d) Category
+e) Quantity
+f) Total
 
 ## This must be done in two projects:
 
-1. Backend: Generate an API with two methods to add and list sales.
+1. **Backend:** Generate an API with two methods to add and list sales.
 
-2. Frontend: Only HTML and JavaScript to generate the form and table, and consume the services using JavaScript's fetch method.
+2. **Frontend:** Only HTML and JavaScript to generate the form and table, and consume the services using JavaScript's fetch method.
