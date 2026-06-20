@@ -2,7 +2,6 @@
 ---Part 1
 
 SQL Server Query Test
-https://docs.google.com/forms/d/e/1FAIpQLSeuzS8rfe46ISG_k7rPRGgWVET1A3517HTA1O63556jo0gONQ/viewform?usp=dialog
 
 Database Structure Script:
 CREATE TABLE Clients (
