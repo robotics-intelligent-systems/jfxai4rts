@@ -1,47 +1,54 @@
+# Technical Challenge - Description
 
-# Desafío Técnico - Descripción
+## Technical Considerations:
+- Use the Go (Golang) programming language for one API and Node.js for the other.
 
-## Consideraciones técnicas:
-- Utilizar el lenguaje de programación Go (Golang) para una API y Node.js para la otra API.
-- Implementar la solución utilizando los frameworks Fiber para la API en Go y Express.js para la API en Node.js.
-- Documentar el código de manera clara y concisa, siguiendo las mejores prácticas de codificación.
-- Utilizar Docker para contenerizar las aplicaciones y facilitar su despliegue en diferentes entornos.
-- Implementar la comunicación entre las dos API utilizando un mecanismo como HTTP.
-- Utilizar servicios en la nube para la implementación y el despliegue de las aplicaciones.
+- Implement the solution using the Fiber framework for the Go API and Express.js for the Node.js API.
 
-## Arquitectura de la solución:
-- API en Go: Esta API recibirá la matriz original como entrada, realizará la rotación de la matriz y luego enviará los datos 
-resultantes a la segunda API en Node.js.
-- API en Node.js: Esta API recibirá los datos de la matriz rotada de la API en Go, calculará estadísticas sobre los datos y 
-devolverá estas estadísticas como resultado.
+- Document the code clearly and concisely, following coding best practices.
 
-## Funcionalidad requerida:
-- Crear dos API RESTful:
-  - Una API en Go que reciba como entrada un array de arrays de números que represente una matriz rectangular y 
-devuelva la factorización QR de dicha matriz.
-  - Otra API en Node.js que reciba el resultado de las matrices devueltas por la primera API y realice una operación 
-adicional sobre los datos. (*) Detalle en la sección operaciones adicionales
-- Implementar la lógica para realizar la rotación de la matriz y la operación adicional de manera eficiente y correcta en 
-cada API.
+- Use Docker to containerize the applications and facilitate their deployment in different environments.
 
-## Funcionalidad opcional:
-- Implementar un frontend que consuma ambas APIs y muestre los resultados de la rotación de la matriz y las 
-estadísticas adicionales.
-- Aplicar un nivel de seguridad utilizando JWT para proteger las consultas a las APIs.
-- Implementar pruebas unitarias y de integración para garantizar la calidad del código en ambas API.
+- Implement communication between the two APIs using a mechanism such as HTTP.
 
-## Operación adicional:
-- La segunda API calculará lo siguientes sobre los datos de las matrices devueltas:
-  - Valor máximo: El valor máximo encontrado en las matrices.
-  - Valor mínimo: El valor mínimo encontrado en las matrices.
-  - Promedio: El promedio de todos los valores de las matrices.
-  - Suma total: La suma total de todos los valores de las matrices.
-  - Matriz diagonal: Verificar si alguna matriz es diagonal.
+- Use cloud services for the implementation and deployment of the applications.
 
-## Consideraciones:
-- No hay un estándar específico para los nombres de los objetos creados, pero se espera coherencia en su estructura y 
-documentación.
-- En caso de dudas en el enunciado, se espera que el candidato tome decisiones informadas y las sustente durante la 
-entrevista.
-- Se valorará la eficiencia y la elegancia de la solución implementada, así como la capacidad del candidato para 
-comunicar y defender sus decisiones técnicas.
+## Solution Architecture:
+- Go API: This API will receive the original array as input, perform the array rotation, and then send the resulting data to the second Node.js API.
+
+- Node.js API: This API will receive the rotated array data from the Go API, calculate statistics on the data, and return these statistics as a result.
+
+## Required Functionality:
+- Create two RESTful APIs:
+
+- A Go API that receives as input an array of number arrays representing a rectangular array and returns the QR factorization of that array.
+
+- Another Node.js API that receives the result of the arrays returned by the first API and performs an additional operation on the data. (*) Details in the Additional Operations section.
+- Implement the logic to perform the array rotation and the additional operation efficiently and correctly in each API.
+
+## Optional Functionality:
+- Implement a frontend that consumes both APIs and displays the results of the array rotation and the additional statistics.
+
+- Apply a security layer using JWT to protect the API queries.
+
+- Implement unit and integration tests to ensure code quality in both APIs.
+
+## Additional Operation:
+- The second API will calculate the following on the returned array data:
+
+- Maximum value: The maximum value found in the arrays.
+
+- Minimum value: The minimum value found in the arrays.
+
+- Average: The average of all array values.
+
+- Total sum: The total sum of all array values.
+
+- Diagonal array: Check if any array is diagonal.
+
+## Considerations:
+- There is no specific standard for the names of the created objects, but consistency in their structure and documentation is expected.
+
+- If there are any doubts regarding the job description, the candidate is expected to make informed decisions and support them during the interview.
+
+- The efficiency and elegance of the implemented solution will be valued, as well as the candidate's ability to communicate and defend their technical decisions.

@@ -1,436 +1,194 @@
 # Backend Technical Challenge
 
-## Prueba técnica para Desarrollador Backend
+## Technical Test for Backend Developer
 
-Este reto técnico forma parte del proceso de selección para la posición de **Desarrollador Backend**.
+This technical challenge is part of the selection process for the **Backend Developer** position.
 
-La prueba busca evaluar criterio real de desarrollo backend, manejo de Laravel/PHP, diseño de APIs, jobs/queues, procesamiento de notificaciones bancarias, conciliación de cierre, integración con servicios externos, base de datos, idempotencia, trazabilidad y lógica transaccional.
+The test aims to evaluate real-world backend development skills, Laravel/PHP proficiency, API design, jobs/queues, bank notification processing, closing reconciliation, integration with external services, database management, idempotence, traceability, and transactional logic.
 
-No buscamos una solución innecesariamente extensa ni un sistema completo en producción. Buscamos una implementación clara, ordenada y técnicamente bien sustentada, donde se evidencie cómo tomarías decisiones frente a escenarios reales.
+We are not looking for an unnecessarily extensive solution or a complete production system. We are looking for a clear, organized, and technically sound implementation that demonstrates how you would make decisions in real-world scenarios.
 
+# 1. Case Context
 
-# 1. Contexto del caso
+The company processes payments for merchants.
 
-La empresa procesa pagos para comercios.
+When a customer makes a payment at the bank, the system receives real-time bank confirmation. This confirmation allows the payment to be operationally recorded within the system.
 
-Cuando un cliente realiza un pago en el banco, el sistema recibe una confirmación bancaria en tiempo real. Esa confirmación permite registrar operativamente el pago dentro del sistema.
+Later, at the end of the day, the bank sends a reconciliation file or batch with the formal details of the processed transactions. This reconciliation process should not duplicate payments, but rather validate what has been received in real time and detect any discrepancies.
 
-Posteriormente, al cierre del día, el banco envía un archivo o lote de conciliación con el detalle formal de los movimientos procesados. Esta conciliación no debe duplicar pagos, sino validar lo recibido en tiempo real y detectar posibles diferencias.
+Furthermore, when a transaction is successfully confirmed as paid, the system should simulate a notification to an external service, such as an internal merchant system, a third-party provider, or a settlement module.
 
-Además, cuando una operación queda correctamente confirmada como pagada, el sistema debe simular una notificación a un servicio externo, como podría ser un sistema interno de comercios, un proveedor tercero o un módulo de liquidación.
+The goal is to build a backend API that securely handles this workflow, preventing duplicates, inconsistencies, reprocessing, and settlement errors.
 
-El objetivo es construir una API backend que maneje este flujo de forma segura, evitando duplicados, inconsistencias, reprocesamientos y errores de liquidación.
+# 2. Suggested Stack
 
+The test should be developed using:
 
-# 2. Stack sugerido
+- Modern Laravel.
 
-La prueba debe desarrollarse con:
+- PHP 8.2 or higher.
 
-- Laravel moderno.
-- PHP 8.2 o superior.
-- MySQL o PostgreSQL.
-- Jobs/Queues de Laravel.
-- Redis, database queue o el driver que consideres adecuado, siempre que expliques tu decisión.
-- Pest o PHPUnit para pruebas básicas.
+- MySQL or PostgreSQL.
 
-No es necesario construir frontend.
+- Laravel Jobs/Queues.
 
-Se valorará el uso adecuado de:
+- Redis, a database queue, or any driver you deem appropriate, provided you explain your choice.
+
+- Pest or PHPUnit for basic testing.
+
+Building a frontend is not required.
+
+Appropriate use of the following will be considered an asset:
 
 - Form Requests.
+
 - API Resources.
-- Enums o constantes para estados.
-- Services, Actions o clases de dominio.
+
+- Enums or constants for states.
+
+- Services, Actions, or domain classes.
+
 - Jobs.
-- Migraciones.
-- Seeders o factories, si lo consideras necesario.
-- Logs y trazabilidad.
 
+- Migrations.
 
-# 3. Tiempo esperado
+- Seeders or factories, if you deem it necessary.
 
-La prueba está pensada para resolverse en aproximadamente **4-6 horas**.
+- Logs and traceability.
 
-Si por tiempo decides no implementar algún detalle secundario, puedes dejarlo explicado en el README de tu solución indicando cómo lo abordarías en un entorno de producción y por qué.
+# 3. Expected Time
 
+The test is designed to be completed in approximately **4-6 hours**.
 
-# 4. Alcance de la prueba
+If, due to time constraints, you decide not to implement any secondary details, you can explain them in your solution's README, indicating how you would address them in a production environment and why.
 
-Debes implementar los siguientes módulos:
+# 4. Test Scope
 
-1. Crear operación de pago.
-2. Recibir confirmación bancaria en tiempo real.
-3. Procesar la confirmación mediante un job.
-4. Evitar duplicados por `event_id` y `bank_transaction_id`.
-5. Validar monto y moneda.
-6. Marcar operaciones como `PAID` u `OBSERVED` según corresponda.
-7. Procesar conciliación bancaria de cierre del día.
-8. Detectar coincidencias, diferencias y movimientos no encontrados.
-9. Simular una notificación a un servicio externo cuando una operación queda `PAID`.
-10. Consultar operaciones candidatas a liquidación considerando estado, conciliación y hora de corte.
+You must implement the following modules:
 
+1. Create a payment transaction.
 
-# 5. Módulo A: Crear operación de pago
+2. Receive real-time bank confirmation.
+
+3. Process the confirmation using a job.
+
+4. Avoid duplicates using `event_id` and `bank_transaction_id`.
+
+5. Validate the amount and currency.
+
+6. Mark transactions as `PAID` or `OBSERVED` as appropriate. 7. Process end-of-day bank reconciliation.
+
+8. Detect matches, discrepancies, and missing transactions.
+
+9. Simulate a notification to an external service when a transaction is marked as `PAID`.
+
+10. Query transactions eligible for settlement, considering status, reconciliation, and cutoff time.
+
+# 5. Module A: Create Payment Transaction
 
 ## Endpoint
 
 ```http
+
 POST /api/v1/payments
 ```
 
-## Payload de ejemplo
+## Example Payload
 
 ```json
 {
-  "merchant_id": 10,
-  "customer_document": "76359665",
-  "amount": 150.50,
-  "currency": "PEN",
-  "description": "Pago de servicio mensual"
+"merchant_id": 10,
+"customer_document": "76359665",
+"amount": 150.50,
+"currency": "PEN",
+"description": "Monthly Service Payment"
 }
 ```
 
-## Reglas esperadas
+## Expected Rules
 
-La operación debe crearse con:
+The transaction must be created with:
 
-- Código único de pago.
-- Estado inicial `PENDING`.
-- Monto.
-- Moneda.
-- Comercio asociado.
-- Documento del cliente.
-- Fecha de creación.
+- Unique payment code.
 
-Ejemplo de código de pago:
+- Initial status `PENDING`.
+
+- Amount.
+
+- Currency.
+
+- Associated Merchant.
+
+- Customer ID.
+
+- Creation Date.
+
+Example payment code:
 
 ```text
 LTP-20260424-000001
 ```
 
-Ejemplo de respuesta:
+Example response:
 
 ```json
 {
-  "payment_code": "LTP-20260424-000001",
-  "status": "PENDING",
-  "amount": "150.50",
-  "currency": "PEN"
+"payment_code": "LTP-20260424-000001",
+"status": "PENDING",
+"amount": "150.50",
+"currency": "PEN"
 }
 ```
 
-Se valorará que el manejo de montos evite errores de precisión, por ejemplo usando centavos como entero o `DECIMAL` con una justificación clara.
+It will be appreciated if the handling of amounts avoids precision errors, for example, using cents as integers or decimals with a clear justification.
 
-
-# 6. Módulo B: Recibir confirmación bancaria en tiempo real
+# 6. Module B: Receiving Real-Time Bank Confirmation
 
 ## Endpoint
 
 ```http
+
 POST /api/v1/bank/notifications
 ```
 
-## Payload de ejemplo
+## Example Payload
 
 ```json
 {
-  "event_id": "evt_001",
-  "bank_transaction_id": "bank_tx_999",
-  "payment_code": "LTP-20260424-000001",
-  "amount": 150.50,
-  "currency": "PEN",
-  "status": "PAID",
-  "paid_at": "2026-04-24 20:44:00"
+"event_id": "evt_001",
+"bank_transaction_id": "bank_tx_999",
+"payment_code": "LTP-20260424-000001",
+"amount": 150.50,
+"currency": "PEN",
+"status": "PAID",
+"paid_at": "2026-04-24 20:44:00"
 }
 ```
 
-## Reglas esperadas
+## Expected Rules
 
-- Validar autenticidad mediante token, firma simple, HMAC o mecanismo equivalente.
-- Guardar el payload original recibido.
-- No procesar toda la lógica directamente en el controller.
-- Registrar el evento recibido.
-- Despachar un job para procesar la confirmación.
-- Evitar procesar dos veces el mismo `event_id`.
-- Evitar duplicar el pago si llega dos veces el mismo `bank_transaction_id`.
-- Si el monto no coincide con la operación original, la operación debe quedar `OBSERVED`.
-- Si la moneda no coincide, la operación debe quedar `OBSERVED`.
-- Si todo coincide, la operación debe quedar `PAID`.
-- Debe quedar trazabilidad de la decisión tomada.
+- Validate authenticity using a token, simple signature, HMAC, or equivalent mechanism.
 
-El job puede llamarse, por ejemplo:
+- Save the original received payload.
 
-```text
-ProcessBankNotificationJob
-```
+- Do not process all logic directly in the controller.
 
+- Log the received event.
+- Dispatch a job to process the confirmation.
 
-# 7. Módulo C: Procesar la confirmación mediante job
+- Avoid processing the same `event_id` twice.
 
-La confirmación bancaria debe procesarse mediante un job, no directamente dentro del controller.
+- Avoid duplicate payments if the same `bank_transaction_id` is received twice.
 
-El job debe encargarse de:
+- If the amount does not match the original transaction, the transaction should be marked `OBSERVED`.
 
-- Buscar la operación por `payment_code`.
-- Validar que el evento no haya sido procesado previamente.
-- Validar monto.
-- Validar moneda.
-- Validar estado actual de la operación.
-- Actualizar la operación a `PAID` u `OBSERVED`, según corresponda.
-- Registrar auditoría o trazabilidad.
-- Manejar errores de forma controlada.
+- If the currency does not match, the transaction should be marked `OBSERVED`.
 
-Se valorará el uso de transacciones de base de datos cuando corresponda.
+- If everything matches, the transaction should be marked `PAID`.
 
+- A record of the decision made must be kept.
 
-# 8. Módulo D: Procesar conciliación de cierre del día
-
-## Endpoint
-
-```http
-POST /api/v1/bank/reconciliation
-```
-
-## Payload de ejemplo
-
-```json
-{
-  "bank": "BANK_A",
-  "process_date": "2026-04-24",
-  "movements": [
-    {
-      "bank_movement_id": "mov_001",
-      "bank_transaction_id": "bank_tx_999",
-      "payment_code": "LTP-20260424-000001",
-      "amount": 150.50,
-      "currency": "PEN",
-      "paid_at": "2026-04-24 20:44:30"
-    },
-    {
-      "bank_movement_id": "mov_002",
-      "bank_transaction_id": "bank_tx_1000",
-      "payment_code": "LTP-20260424-000002",
-      "amount": 200.00,
-      "currency": "PEN",
-      "paid_at": "2026-04-24 20:46:00"
-    }
-  ]
-}
-```
-
-## Reglas esperadas
-
-- No procesar dos veces el mismo `bank_movement_id`.
-- Si el movimiento coincide con una operación ya confirmada en tiempo real, debe quedar conciliado sin duplicar el pago.
-- Si el movimiento trae monto o moneda diferente, debe registrarse como inconsistencia.
-- Si el `payment_code` no existe, el movimiento debe quedar como no conciliado o `UNMATCHED`.
-- Si el movimiento existe en conciliación pero nunca llegó por tiempo real, puedes procesarlo como confirmación tardía o dejarlo observado. Debes explicar tu decisión.
-- Debe quedar trazabilidad de lo procesado, duplicado, observado o no conciliado.
-
-
-# 9. Módulo E: Simular notificación a servicio externo
-
-Cuando una operación quede correctamente confirmada como `PAID`, el sistema debe simular una notificación a un servicio externo.
-
-Puedes implementar una clase o servicio, por ejemplo:
+The job can be named, for example:
 
 ```text
-PaymentNotificationClient
-```
-
-Y un job, por ejemplo:
-
-```text
-NotifyPaymentConfirmedJob
-```
-
-No es necesario conectarse a un proveedor real. Puedes simular la integración mediante una clase fake, mock, endpoint interno o servicio local.
-
-## Reglas esperadas
-
-- La notificación externa no debe ejecutarse directamente desde el controller.
-- Debe ejecutarse mediante un job.
-- Debe registrarse el intento de notificación.
-- Debe evitarse notificar dos veces la misma operación.
-- Debe manejar al menos un caso de error simulado.
-- Debes explicar cómo manejarías timeouts, errores 500 o respuestas inválidas en producción.
-
-Se valorará que el diseño permita reemplazar fácilmente el servicio simulado por una integración real.
-
-
-# 10. Módulo F: Consultar pagos candidatos a liquidación
-
-## Endpoint
-
-```http
-GET /api/v1/settlements/candidates
-```
-
-Debe devolver operaciones aptas para liquidación.
-
-## Reglas esperadas
-
-- Solo deben aparecer operaciones `PAID`.
-- No deben aparecer operaciones `OBSERVED`.
-- No deben aparecer operaciones con diferencias de conciliación.
-- No deben aparecer operaciones ya liquidadas, si decides implementar una marca básica de liquidación.
-- Debe considerarse la hora de corte `20:45`.
-- La zona horaria debe ser `America/Lima`.
-- Si el pago fue confirmado hasta las `20:45`, puede pasar a liquidación del siguiente día hábil.
-- Si fue confirmado después de las `20:45`, puede pasar a liquidación del subsiguiente día hábil.
-
-No es obligatorio implementar toda la liquidación contable. Basta con identificar correctamente qué pagos serían candidatos.
-
-
-# 11. Estados mínimos
-
-Debes manejar como mínimo estos estados:
-
-- `PENDING`
-- `PAID`
-- `OBSERVED`
-- `RECONCILED`
-
-Opcionalmente puedes incluir:
-
-- `SETTLEMENT_PENDING`
-- `SETTLED`
-- `UNMATCHED`
-- `NOTIFIED`
-
-No es obligatorio implementar una máquina de estados compleja, pero sí se evaluará que no existan cambios de estado incoherentes.
-
-Por ejemplo, una operación correctamente confirmada como `PAID` no debería volver a `PENDING` ni ser sobrescrita sin una regla válida.
-
-
-# 12. Base de datos
-
-Debes crear las tablas que consideres necesarias.
-
-Como mínimo, esperamos una estructura equivalente a:
-
-- `payments`
-- `bank_notifications` o `bank_events`
-- `bank_reconciliation_movements`
-- `payment_audits` o tabla equivalente de trazabilidad
-- `external_notifications` o tabla equivalente para registrar notificaciones externas
-
-Se valorará que uses restricciones o índices para proteger la integridad del sistema, por ejemplo:
-
-- `payment_code` único.
-- `event_id` único.
-- `bank_transaction_id` indexado o único según tu criterio.
-- `bank + bank_movement_id` único.
-- `payment_id` único o controlado en la tabla de notificaciones externas.
-- Índices para consultar pagos por estado, comercio y fecha.
-
-Incluye en el README de tu solución una breve explicación de los índices principales y por qué los creaste.
-
-
-# 13. Pruebas mínimas esperadas
-
-Incluye tests con Pest o PHPUnit para validar, como mínimo:
-
-1. Crear una operación `PENDING`.
-2. Confirmar una operación con notificación bancaria válida.
-3. Evitar duplicar el procesamiento si llega dos veces el mismo `event_id`.
-4. Evitar duplicar el pago si llega dos veces el mismo `bank_transaction_id`.
-5. Marcar como `OBSERVED` una operación con monto incorrecto.
-6. Procesar conciliación de cierre para una operación ya confirmada en tiempo real.
-7. Detectar una diferencia entre la confirmación en tiempo real y la conciliación.
-8. Registrar o simular la notificación externa cuando una operación queda `PAID`.
-
-No buscamos cobertura total, pero sí pruebas que demuestren que validaste los casos críticos.
-
-
-# 14. Entregables
-
-Debes entregar:
-
-1. Repositorio Git o archivo comprimido con el código.
-2. README con instrucciones de instalación y ejecución.
-3. Archivo `.env.example`.
-4. Migraciones.
-5. Tests automatizados.
-6. Documentación breve de endpoints o colección Postman/Insomnia.
-7. Explicación breve de cómo ejecutar el queue worker.
-8. Explicación breve de tus decisiones de base de datos, índices e idempotencia.
-9. Explicación breve de cómo estructuraste la integración externa simulada.
-
-
-# 15. Criterios de evaluación
-
-La prueba será evaluada sobre 100 puntos.
-
-| Criterio | Puntaje |
-|---|---:|
-| Claridad y orden del proyecto | 10 |
-| Correcto uso de Laravel y PHP | 10 |
-| Diseño de API y validaciones | 10 |
-| Uso real de jobs/queues | 12 |
-| Manejo de idempotencia | 14 |
-| Seguridad básica de la notificación bancaria | 6 |
-| Modelado de base de datos | 10 |
-| Índices y restricciones | 10 |
-| Manejo correcto de estados | 6 |
-| Trazabilidad de eventos | 6 |
-| Integración externa simulada | 6 |
-| Tests automatizados | 6 |
-| Documentación | 4 |
-| Total | 100 |
-
-## Interpretación
-
-| Puntaje | Resultado |
-|---|---|
-| 85 a 100 | Muy buen candidato |
-| 75 a 84 | Apto para entrevista técnica final |
-| 65 a 74 | Evaluar solo si el perfil y expectativa salarial son convenientes |
-| Menos de 65 | No recomendable para continuar |
-
-
-# 16. Presentación técnica posterior
-
-Luego de revisar la solución, podremos coordinar una presentación técnica.
-
-La presentación debe durar aproximadamente entre 15 y 20 minutos, seguida de preguntas técnicas.
-
-El objetivo será entender no solo qué implementaste, sino por qué lo implementaste de esa manera.
-
-## Puntos que debes preparar
-
-1. Resumen general de la solución implementada.
-2. Arquitectura del proyecto y organización del código.
-3. Flujo completo de una operación desde su creación hasta quedar candidata a liquidación.
-4. Confirmación bancaria en tiempo real.
-5. Procesamiento mediante jobs/queues.
-6. Manejo de idempotencia y eventos duplicados.
-7. Modelo de base de datos, índices y restricciones.
-8. Procesamiento de conciliación de cierre.
-9. Manejo de operaciones observadas o inconsistentes.
-10. Simulación de notificación a un servicio externo.
-11. Tests implementados.
-12. Mejoras que aplicarías en producción.
-
-
-# 17. Entrega
-
-La entrega debe realizarse mediante un repositorio privado de GitHub.
-
-Debes agregar como colaborador al usuario de GitHub latinpay123 o compartir el acceso correspondiente.
-
-
-# 18. Plazo
-
-El plazo de entrega será hasta:
-
-```text
-Lunes 04 de Mayo del 2026 a las 11:30 am
-```
-
-Luego de revisar tu solución y asignarte un puntaje, coordinaremos una entrevista técnica final para conversar sobre tus decisiones, estructura, manejo de casos borde y posibles mejoras.
-
-
-# 19. Nota final
-
-El objetivo de esta prueba no es medir únicamente velocidad de desarrollo, sino criterio técnico, orden, comprensión del flujo transaccional y capacidad para diseñar una solución mantenible.
+Proc

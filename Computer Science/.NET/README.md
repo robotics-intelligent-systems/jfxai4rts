@@ -1,79 +1,89 @@
 
-You’re asking about OpenModelica, Scilab, and .NET — which suggests you want to integrate or connect these environments for modeling, simulation, and possibly application development.
+---Part 1
 
-Here’s a breakdown of how these can work together and what’s possible:
+SQL Server Query Test
+https://docs.google.com/forms/d/e/1FAIpQLSeuzS8rfe46ISG_k7rPRGgWVET1A3517HTA1O63556jo0gONQ/viewform?usp=dialog
 
-1. OpenModelica
-- Purpose: Open-source environment for modeling and simulating systems using the Modelica language.
-- Interfaces:
-  OMPython (Python API)
-  OMC API (via CORBA or ZeroMQ)
-  C API (generated from compiled models)
-  FMU Export (Functional Mock-up Units, FMI standard)
-2. Scilab
-- Purpose: Open-source numerical computation platform (similar to MATLAB).
-- Integration with Modelica:
-  Xcos (Scilab’s graphical modeling tool) can import/export Modelica blocks.
-  Scilab-OpenModelica Integration projects exist to run Modelica simulations from Scilab scripts.
-  Can call external C/C++/Java/.NET code via gateways.
-3. .NET
-- Purpose: Application development framework (C#, F#, VB.NET, etc.).
-- Integration Options:
-- Call FMUs from .NET:
-  Export your OpenModelica model as an FMU (FMI 2.0 Co-Simulation or Model Exchange) and load it in .NET using an FMI library (e.g., FMI.NET).
-- Call Scilab from .NET:
-  Use Scilab’s API via COM (Windows) or process calls.
-- Call .NET from Scilab:
-  Use Scilab’s call or jwrap (Java bridge) with IKVM or .NET Core interop.
-## Possible Integration Workflow
-Model in OpenModelica → Export as FMU.
-Run FMU in Scilab (via FMI toolbox) for numerical analysis or control design.
-Embed FMU or Scilab computations in .NET application for deployment.
-Example: Running an OpenModelica FMU in .NET
-Here’s a minimal C# example using FMI.NET:
+Database Structure Script:
+CREATE TABLE Clients (
+ClientId INT PRIMARY KEY,
+Name VARCHAR(100),
+RegistrationDate DATE
+);
 
-`
-using System;
-using FMILibrary; // Install FMI.NET via NuGet
+CREATE TABLE Categories (
+CategoryId INT PRIMARY KEY,
+Name VARCHAR(100)
+);
 
-class Program
-{
-    static void Main()
-    {
-        string fmuPath = "MyModel.fmu";
+CREATE TABLE Products ( 
+ProductId INT PRIMARY KEY, 
+Name VARCHAR(100), 
+CategoryId INT, 
+DECIMAL Price(10.2), 
+FOREIGN KEY (CategoriaId) REFERENCES Categories(CategoriaId)
+);
 
-        try
-        {
-            using (var fmu = new FMU(fmuPath))
-            {
-                fmu.Instantiate();
-                fmu.SetupExperiment();
-                fmu.EnterInitializationMode();
-                fmu.ExitInitializationMode();
+CREATE TABLE Sales ( 
+SaleId INT PRIMARY KEY, 
+ClientId INT, 
+ProductId INT, 
+Date DATE, 
+INT quantity, 
+FOREIGN KEY (CustomerId) REFERENCES Customers(CustomerId), 
+FOREIGN KEY (ProductId) REFERENCES Products(ProductId)
+);
 
-                for (double t = 0; t <= 10; t += 0.1)
-                {
-                    fmu.DoStep(t, 0.1);
-                    double output = fmu.GetReal("y"); // Replace with your variable name
-                    Console.WriteLine($"t={t:F1}, y={output}");
-                }
+-- Insert data
+INSERT INTO Customers VALUES
+(1,'Ana','2024-01-10'),
+(2,'Luis','2024-02-15'),
+(3,'Carla','2024-03-01');
 
-                fmu.Terminate();
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error running FMU: {ex.Message}");
-        }
-    }
-}
-`
+INSERT INTO Categories VALUES
+(1,'Electronics'),
+(2,'Clothing'),
+(3,'Home');
 
-Notes:
+INSERT INTO Products VALUES
+(1,'Laptop',1,3500),
+(2,'Mouse',1,50),
+(3,'Shirt',2,80),
+(4,'Chair',3,300),
+(5,'Keyboard',1,120);
 
-Requires FMI.NET or another FMI-compatible library.
-The FMU must be exported from OpenModelica with the correct FMI version.
-If you want, I can prepare a full working pipeline:
-OpenModelica → FMU → Scilab → .NET with example files and commands so you can run a complete simulation across all three environments.
+INSERT INTO Sales VALUES
+(1,1,1,'2025-01-01',1),
+(2,1,2,'2025-01-02',2),
+(3,1,5,'2025-01-05',1),
+(4,2,3,'2025-01-03',3),
+(5,2,1,'2025-01-10',1),
+(6,3,4,'2025-01-02',2),
+(7,3,2,'2025-01-04',5),
+(8,1,3,'2025-01-15',4),
+(9,2,2,'2025-01-20',10),
+(10,3,1,'2025-01-25',1);
 
-Do you want me to prepare that full integration example?
+---Part 2
+
+Form with these fields that allows adding:
+Client (Request)
+Product (Request)
+Category (Autofill)
+Price (Autofill)
+Quantity (Request)
+Add button
+
+And a simple table containing these columns:
+Date
+Client
+Product
+Category
+Quantity
+Total
+
+This must be done in two projects:
+
+1. Backend: Generate an API with two methods to add and list sales.
+
+2. Frontend: Only HTML and JavaScript to generate the form and table, and consume the services using JavaScript's fetch method.
