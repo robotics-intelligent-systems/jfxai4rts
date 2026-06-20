@@ -1,4 +1,18 @@
 
+# C++ Online Test Competency Framework
+
+**Hands-on programming**
+It measures the candidate's applied coding skills and ability to resolve debugging questions on a back-end simulator.
+
+**CPP basics**
+It covers basic subskills such as CPP operators and expressions - application, CPP data types - application, and CPP control statements - concept.
+
+**Object-oriented programming**
+It includes topics such as CPP OOPS fundamentals - application, CPP inheritance - application and concept and CPP classes and objects - application.
+
+**Advanced topics**
+It includes advanced concepts such as data structures - stack and linked list, CPP memory allocation - application, CPP functions - analysis and application, and CPP pointers - applicatio
+
 # 3MetaD Candidate Assignment Options 
 
 ## Gameplay / Systems Demos 

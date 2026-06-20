@@ -16,7 +16,14 @@ It includes the following skills- Natural Language Processing -Text Preprocessin
 
 4. **Hands-on Programming**
 
-It includes Codelysis - Python
+This Tensorflow test evaluates the basic understanding of the following subskills; Python - Strings, Functions, Lists and Miscellaneous.
+
+This Tensorflow test evaluates the understanding of the following; Dataset, Data Visualisation, Classes, Neural Networks, Performance, Tensor Rank, Matrix Operations, Functions and General concepts.
+
+This Machine Learning assessment test evaluates the knowledge of core concepts such as Data Preprocessing, Dimensionality Reduction, Regression and its types along with Data Science Algorithm
+
+This Machine Learning assessment test evaluates the knowledge of advanced concepts such as Neural Network, Natural Language Processing, Deep Learning and Deep Learning Artificial Neural Networks.
+
 
 # About Quoteable.ai 
 
